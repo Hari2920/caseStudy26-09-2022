@@ -6,64 +6,66 @@ import java.util.Scanner;
 
 public class StaffMain {
 	public static Double totalCalculation(Applicant applicant)
-	{
-		double total;
-		if(applicant.getSubject1Mark()<50 || applicant.getSubject2mark()<50 || applicant.getSubject3Mark()<50)
 		{
-			total=0;
-			
+			double total;
+			if(applicant.getSubject1Mark()<50 || applicant.getSubject2Mark()<50  || applicant.getSubject3Mark()<50)
+			{
+				return 0.0;
+			}
+			else
+			{
+				total=applicant.getSubject1Mark()+applicant.getSubject2Mark()+applicant.getSubject3Mark();
+				return total;
+			}
 		}
-		else
+		public static Double percentageCalculation(Double total)
 		{
-			total=applicant.getSubject1Mark()+applicant.getSubject2mark()+applicant.getSubject3Mark();
+			double percentage;
+			percentage=(total/300)*100;
+			return percentage;
 		}
-		return total;
-		
-	}
-	public static Double percentageCalculation(Double total)
-	{
-		double percentage=(total/300)*100;
-		 
-		 return  percentage ; 
-	}
-	public static void main(String args[])
-	{
-		Scanner sc=new Scanner(System.in);
-		System.out.println("Enter the number of applicants:");
-		List<Applicant> AppList=new ArrayList<Applicant>();
-		int n=sc.nextInt();
-		for(int i=0;i<n;i++) {
+
+
+		public static void main(String[] args) {
+			ArrayList<Applicant> arr=new ArrayList<Applicant>();
+			Scanner sc=new Scanner(System.in);
+			System.out.println("Enter number of applicants:");
+			int n=sc.nextInt();
+			for(int i=0;i<n;i++)
+			{
 			System.out.println("Enter applicant details:");
-			String str=sc.next();
-			String[] stg=str.split(",");
-			int id=100+i;
-			Double sbj1=Double.parseDouble(stg[1]);
-			Double sbj2=Double.parseDouble(stg[2]);
-			Double sbj3=Double.parseDouble(stg[3]);
-			Applicant app=new Applicant();
-			app.setId(id);
-			app.setName(stg[0]);
-			app.setSubject1Mark(sbj1);
-			app.setSubject2mark(sbj2);
-			app.setSubject3Mark(sbj3);
-			try {
-			if(sbj1<0 || sbj1>100 || sbj2<0 || sbj2>100 || sbj3<0 || sbj3>100)
+			String s=sc.next();
+			String str[]=s.split(",");
+			double mark1=Double.parseDouble(str[1]);
+			double mark2=Double.parseDouble(str[2]);
+			double mark3=Double.parseDouble(str[3]);
+			Applicant a=new Applicant(str[0],mark1,mark2,mark3);
+			double total=totalCalculation(a);
+			double percentage=percentageCalculation(total);
+			try
+			{
+			if(mark1<0 || mark1>100 || mark2<0 || mark2>100 || mark3<0 || mark3>100)
+			{
 				throw new MarkException("Subject marks were less than zero or greater than 100");
 			}
-			catch (MarkException me)
-			{
-				me.getMessage();
 			}
-			Double total=totalCalculation(app);
-			if(total!=0) {
-			Double percentage=percentageCalculation (total);
-			app.setTotal(total);
-			app.setPercentage(percentage);
-			AppList.add(app);}
-			
+			catch(MarkException me)
+			{
+				System.out.println(me.getMessage());
+			}
+			a.setTotal(total);
+			a.setPercentage(percentage);
+			if(total!=0)
+			{
+				arr.add(a);
+			}
+			}
+			for(Applicant f:arr)
+			{
+				System.out.println(f);
+			}
+
 		}
-		AppList.forEach((value)->System.out.println(value));
-	}
 			
 	}
 
